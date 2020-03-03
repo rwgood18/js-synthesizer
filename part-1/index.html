@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS Synthesizer</title>
+</head>
+<body>
+
+    <!-- HTML -->
+    <div class="container">
+        <div class="js-synth bg-light mt-4">
+            <div id="border" class="border p-4">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="title">Synthesizer</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="section">
+                            <p class="label">Oscillator 1</p>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text" for="waveType">Waveform</label>
+                              </div>
+                              <select class="custom-select" id="waveType">
+                                <option value="sine">Sine</option>
+                                <option value="square">Square</option>
+                                <option value="sawtooth" selected>Sawtooth</option>
+ <option value="triangle" selected>Triangle</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button id="playBtn">Play</button>
+                        <button id="stopBtn" style="display: none;">Stop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Styles -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <!-- JS Libraries -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous">
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
+        crossorigin="anonymous">
+    </script>
+
+    <!-- Our custom JavaScript -->
+    <script type="text/javascript" src="synth.js"></script>
+
+</body>
+</html>
