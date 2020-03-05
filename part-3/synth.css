@@ -1,12 +1,17 @@
 /* Variables */
 /* Imports */
 .keys ul {
+  height: 192px;
+  width: 758px;
   margin: 0 auto 1em;
   padding: 0 1.5em;
   position: relative;
-  height: 15em;
-  width: 31em;
-  font-size: 12px; }
+  font-size: 12px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 0);
+  transform-origin: center center; }
 
 .keys li {
   margin: 0;
