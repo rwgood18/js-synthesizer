@@ -15,6 +15,11 @@
         'B':  61.735412657015513
     };
 
+    var synth = {
+        type: 'sawtooth',
+        octave: 3
+    }
+
     // Create AudioContext
     var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
@@ -23,25 +28,37 @@
     // Voice class
     class Voice {
 
-        constructor(note) {
-            // * 4 because if we only have one octave, 
-            // it should be high enough to sound decent. In a future
-            // post, we will make use of a greater frequency range 
-            // by multiplying these 12 frequencies in hzs
-            this.frequency = hzs[note] * 4; 
+        constructor(rawNote, kbNote) {
+            this.frequency = 0;
 
-            console.log('Note is ' + note);
-            console.log('Frequency is ' + this.frequency);
+            var octave = synth.octave;
+            
+            if (octave === 1) {
+                this.frequency = hzs[rawNote];
+            } else if (octave === 2) {
+                this.frequency = hzs[rawNote] * 2;
+            } else if (octave === 3) {
+                this.frequency = hzs[rawNote] * 4;
+            } else if (octave === 4) {
+                this.frequency = hzs[rawNote] * 8;
+            } else if (octave === 5) {
+                this.frequency = hzs[rawNote] * 16;
+            } else if (octave === 6) {
+                this.frequency = hzs[rawNote] * 32;
+            } else if (octave === 7) {
+                this.frequency = hzs[rawNote] * 64;
+            }
 
-            this.note = note;
+            console.log('Note: ' + kbNote);
+            console.log('Frequency: ' + this.frequency);
+
             this.oscillator = audioCtx.createOscillator();
-            this.oscillator.type = $('#waveType').val(); // Get waveform type from the dropdown box
+            this.oscillator.type = synth.type; // Get waveform type synth settings
+            this.oscillator.frequency.setValueAtTime(this.frequency, audioCtx.currentTime); // value in hertz
         }
 
         start() {
-            this.oscillator.frequency.setValueAtTime(this.frequency, audioCtx.currentTime); // value in hertz
             this.oscillator.connect(audioCtx.destination); // connect oscillator to output
-
             this.oscillator.start(); 
         }
 
@@ -55,20 +72,16 @@
     $('.key').on('mousedown', function() {
 
         var kbNote = $(this).attr('data-note');
-        var type = $('#waveType').val();
+        synth.type = $('#waveType').val();
 
-        // Reset octave to first showing onkeyboard
+        // Reset octave to first showing onkeyboard (first octave on the left side)
         synth.octave = parseInt($('#octaveSelect').val());
 
         // Adjust octave
         if (kbNote.indexOf(2) != -1) {
-          // console.log("synth.octave:" + synth.octave);
-          synth.octave++;
-          // console.log("synth.octave:" + synth.octave);
+          synth.octave++; // If they played in the second octave on the keyboard, add 1
         } else if (kbNote.indexOf(3) != -1) {
-          // console.log("synth.octave:" + synth.octave);
-          synth.octave = synth.octave + 2;
-          // console.log("synth.octave:" + synth.octave);
+          synth.octave = synth.octave + 2; // If they played in the thrid octave on the keyboard, add 2
         }
 
         // Strip numbers. Right now it could look like this: 2F#
@@ -82,19 +95,23 @@
         $(this).addClass('active');
     });
 
-    // Stopping all keys whenever there is a mouseup event
-    // anywhere on the page
-    $('body').on('mouseup', function(e) {
+    $(document).on('mouseup', function(e) {
+        stopAllKeys();
+        return true;
+    });
+
+    function stopAllKeys() {
+        // console.log("stopping all keys");
         const keys = Object.keys(activeVoices);
 
         for (const key of keys) {
-            // console.log('key : ' + key);
             activeVoices[key].stop();
             delete activeVoices[key];
         }
-        
+
         $('.key').removeClass('active');
-    });
+        return true;
+    }
 
 
     // Scale Keyboard
