@@ -6,8 +6,8 @@ var path = require('path');
 
 // Get the list folders in dir directory
 function getFolders(dir) {
-    return fs.readdirSync(dir)
-      .filter(function(file) {
+    return fs.readdirSync(dir) // returns file/folder names
+      .filter(function(file) { // filter those
         return fs.statSync(path.join(dir, file)).isDirectory();
     });
 }

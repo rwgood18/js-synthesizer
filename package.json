@@ -2,26 +2,9 @@
   "name": "js-synthesizer",
   "version": "1.0.0",
   "description": "Multi-part JavaScript Synthesizer Tutorial Examples",
-  "main": "gulp.js",
-  "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rwgood18/js-synthesizer.git"
-  },
-  "keywords": [
-    "JavaScript",
-    "Synthesizer",
-    "Web",
-    "Audio",
-    "API"
-  ],
+  "main": "gulpfile.js",
   "author": "Russell Good",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rwgood18/js-synthesizer/issues"
-  },
   "homepage": "https://github.com/rwgood18/js-synthesizer#readme",
   "devDependencies": {
     "fs": "0.0.1-security",
