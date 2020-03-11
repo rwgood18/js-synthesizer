@@ -15,7 +15,7 @@
         'B':  61.735412657015513
     };
 
-    var keyboard = {
+    var keyboard = { // Keycode to note/octave map
         192: 'C,2', /* ~ */
         49: 'C#,2', /* 1 */
         50: 'D,2', /* 2 */
@@ -103,6 +103,7 @@
             console.log('Note: ' + kbNote);
             console.log('Frequency: ' + this.frequency);
 
+            this.kbNote = kbNote;
             this.oscillator = audioCtx.createOscillator();
             this.oscillator.type = synth.type; // Get waveform type synth settings
             this.oscillator.frequency.setValueAtTime(this.frequency, audioCtx.currentTime); // value in hertz
@@ -171,53 +172,80 @@
         
         if (keyboard.hasOwnProperty(keycode)) {
             var noteOctave = keyboard[keycode];
-            var both = noteOctave.split(',');
-            var rawNote = both[0];
-            var octave = both[1];
+            var both = noteOctave.split(','); 
+            var rawNote = both[0]; // Get raw note e.g. 'C'
+            var octave = both[1]; // Get octave
 
-            if (activeVoices.hasOwnProperty(rawNote+octave)) return false; // Already playing this note
+            // Already playing this note. Exit.
+            if (activeVoices.hasOwnProperty(rawNote+octave)) return false; 
 
+            // Update synth to correct octave
             synth.octave = parseInt(octave);
+            // If the key pressed doesn't correspond to a note on the keyboard that we can already see,
+            // update the octave range
             var current = parseInt($('#octaveSelect').val());
-            var kbOctave = parseInt(both[1]) +1;
-            var oOffset = synth.octave - current;
-
-            // console.log('synth.octave: ' + synth.octave);
-            // console.log('kbOctave: ' + kbOctave);
-            // console.log('offset: ' + oOffset);
-            var kbNote = rawNote;
-            // Choose whether to give active class to first octave or second octave of keyboard
-            switch(oOffset) {
-            case 1:
-              kbNote = 2 + rawNote;
-              break;
-            case 2:
-              kbNote = 3 + rawNote;
-              break;
-            default: // offset = 0 or error
-              kbNote = rawNote;
+            if (synth.octave !== current && synth.octave !== (current + 1)) {
+                $('#octaveSelect').val(synth.octave); 
             }
 
-            // Keyboard visuals
-            updateKeyboardRange();
+            // Value currently showing in the oactave select dropdown
+            var current = parseInt($('#octaveSelect').val()); 
+            // How many actaves to offset from the first octave (from the left)
+            var oOffset = synth.octave - current; 
+            // Which key on the keyboard will get highlighted
+            var kbNote = rawNote; 
 
-            $('[data-note="'+kbNote+'"]').addClass('active');
-            // console.log('kbNote: ' + kbNote);
-            // console.log('rawNote: ' + rawNote);
-            // console.log('synth.octave: ' + synth.octave);
+            // Choose whether to highlight key in first, second or third octave of keyboard
+            switch(oOffset) {
+            case 1:
+                kbNote = 2 + rawNote; // Third octave
+                break;
+            case 2:
+                kbNote = 3 + rawNote; // Second octave
+                break;
+            default: // offset = 0 or error
+                kbNote = rawNote; // First octave
+            }
 
-            synth.type = $('#waveType').val();
+            $('[data-note="'+kbNote+'"]').addClass('active'); // Highlight key on keyboard
 
-            var octave = both[1];
+
             var voice = new Voice(rawNote, kbNote);
-            // var kbOctave = parseInt($('#octaveSelect').val());
-
-
             activeVoices[rawNote+synth.octave] = voice;
             voice.start();
         }
     });
 
+    // Computer keyboard keyup
+    $(document).keyup(function(event){
+        var keycode = (event.which);
+        // console.log('keyup' + keycode);
+
+        if (keyboard.hasOwnProperty(keycode)) {
+            var noteOctave = keyboard[keycode];
+            var both = noteOctave.split(',');
+            var rawNote = both[0];
+            var octave = both[1];
+
+            if(activeVoices.hasOwnProperty(rawNote+octave)) {
+                var voice = activeVoices[rawNote+octave];
+
+                voice.stop();
+
+                var kbNote = voice.kbNote;
+
+                // Delete voice after it's finished sounding
+                // Remember the value is stored in the activeVoices object as
+                // a note + octave e.g. 'C,3'
+                delete activeVoices[rawNote+octave];
+
+                $('[data-note="'+kbNote+'"]').removeClass('active');
+
+            } else {
+                stopAllKeys();
+            }
+        }
+    });
 
     // Scale Keyboard
     var $keys = $("#keys");
