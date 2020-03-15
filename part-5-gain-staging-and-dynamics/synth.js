@@ -75,21 +75,22 @@
     var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
     var pregainNode = audioCtx.createGain();
     var masterGainNode = audioCtx.createGain();
-    masterGainNode.gain.setValueAtTime(-0.01, audioCtx.currentTime);
+    masterGainNode.gain.setValueAtTime(-0.3, audioCtx.currentTime);  // Amount of gain in db -infinity to +infinity
 
     var limiterNode = audioCtx.createDynamicsCompressor();
-
-    // var compConfig = [-5, 40, 10, 20, .030, .25]; //  [Threshhold, Knee, Ratio, Reduction, Attack, Release]
-    limiterNode.threshold.setValueAtTime(-5.0, audioCtx.currentTime);
-
-    limiterNode.knee.setValueAtTime(0, audioCtx.currentTime);
-    limiterNode.ratio.setValueAtTime(10.0, audioCtx.currentTime);
-    limiterNode.attack.setValueAtTime(.005, audioCtx.currentTime);
-    limiterNode.release.setValueAtTime(0.05, audioCtx.currentTime);
+    // Creating a compressor but setting a high threshold and 
+    // high ratio so it acts as a limiter. More explanation at 
+    // https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode
+    limiterNode.threshold.setValueAtTime(-5.0, audioCtx.currentTime); // In Decibels
+    limiterNode.knee.setValueAtTime(0, audioCtx.currentTime); // In Decibels
+    limiterNode.ratio.setValueAtTime(40.0, audioCtx.currentTime);  // In Decibels
+    limiterNode.attack.setValueAtTime(0.001, audioCtx.currentTime); // Time is seconds
+    limiterNode.release.setValueAtTime(0.1, audioCtx.currentTime); // Time is seconds
 
     pregainNode.connect(limiterNode);
     limiterNode.connect(masterGainNode);
     masterGainNode.connect(audioCtx.destination);
+
     var activeVoices = {};
 
     // Voice class
@@ -126,7 +127,7 @@
         }
 
         start() {
-            this.oscillator.connect(pregainNode.destination); // connect oscillator to output
+            this.oscillator.connect(pregainNode); // connect oscillator to pregain output node
             this.oscillator.start(); 
         }
 
@@ -261,6 +262,11 @@
                 stopAllKeys();
             }
         }
+    });
+
+
+    $('#waveType').change(function() {
+        synth.type = $(this).val();
     });
 
     // Scale Keyboard

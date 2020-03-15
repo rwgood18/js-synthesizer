@@ -248,7 +248,7 @@
     });
 
     $('#waveType').change(function() {
-        synth.osc.type = $(this).val();
+        synth.type = $(this).val();
     });
 
     // Scale Keyboard
