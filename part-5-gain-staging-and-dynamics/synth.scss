@@ -1,0 +1,58 @@
+/* Variables */
+$synth-white: #FFFFFF;
+$synth-dk-grey: #363c40;
+
+/* Imports */
+@import "styles/keys.scss";
+
+/* Global Synth Styles */
+.js-synth {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    background: linear-gradient(rgba(16, 133, 157, 1) 25%, rgba(9, 9, 121, 1) 65%, rgba(2, 0, 36, 1) 100%);
+    padding: 10px;
+    color: $synth-white;
+    font-family: courier;
+
+    .border {
+        width: 100%;
+        height: 100%;
+        border: 1px solid grey;
+        padding: .5rem;
+    }
+    .title {
+        font-size: 2em;
+    }
+    .label {
+        font-size: 1.1em;
+        position: relative;
+        z-index: 1;
+    }
+    .input-group {
+        font-size: 1em;
+        .input-group-text {
+            color: inherit;
+            background-color: transparent;
+            border: none;
+        }
+        input {
+            height: 2em;
+            width: 3.5em;
+            max-width: 3.5em;
+            padding: 5px;
+            text-align: center;
+        }
+    }
+    .input-group select.custom-select {
+        color: inherit;
+        background-color: $synth-dk-grey;
+	    appearance: menulist; // Make sure caret still shows white
+	    -moz-appearance: menulist;
+        -webkit-appearance: menulist; 
+    }
+    p {
+        margin-bottom: .5rem;
+    }
+}

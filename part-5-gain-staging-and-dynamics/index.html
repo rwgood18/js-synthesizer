@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS Synthesizer</title>
+</head>
+<body>
+
+    <!-- HTML -->
+    <div class="container">
+        <div class="js-synth bg-light mt-4">
+            <div id="border" class="border p-4">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="title">Synthesizer</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <div class="section">
+                            <p class="label">Oscillator 1</p>
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                <label class="input-group-text" for="waveType">Waveform</label>
+                              </div>
+                              <select class="custom-select" id="waveType">
+                                <option value="sine">Sine</option>
+                                <option value="square">Square</option>
+                                <option value="triangle">Triangle</option>
+                                <option value="sawtooth" selected>Sawtooth</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-lg-7">
+                        <p>Try playing on your keyboard.</p>
+                    </div>
+                    <div class="col-sm-6 col-lg-5 text-right">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text" for="octaveSelect">Keyrange</label>
+                          </div>
+                          <select class="custom-select" id="octaveSelect">
+                            <option value="1">C1 - C3</option>
+                            <option value="2">C2 - C4</option>
+                            <option value="3" selected>C3 - C5</option>
+                            <option value="4">C4 - C6</option>
+                            <option value="5">C5 - C7</option>
+                          </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 ">
+                        <div id="scalable-keys" class="keys">
+                            <ul id="keys">
+                                <li class="key white c" data-note="C"></li>
+                                <li class="key black cs" data-note="C#"></li>
+                                <li class="key white d" data-note="D"></li>
+                                <li class="key black ds" data-note="D#"></li>
+                                <li class="key white e" data-note="E"></li>
+                                <li class="key white f" data-note="F"></li>
+                                <li class="key black fs" data-note="F#"></li>
+                                <li class="key white g" data-note="G"></li>
+                                <li class="key black gs" data-note="G#"></li>
+                                <li class="key white a" data-note="A"></li>
+                                <li class="key black as" data-note="A#"></li>
+                                <li class="key white b" data-note="B"></li>
+                                <li class="key white c" data-note="2C"></li>
+                                <li class="key black cs" data-note="2C#"></li>
+                                <li class="key white d" data-note="2D"></li>
+                                <li class="key black ds" data-note="2D#"></li>
+                                <li class="key white e" data-note="2E"></li>
+                                <li class="key white f" data-note="2F"></li>
+                                <li class="key black fs" data-note="2F#"></li>
+                                <li class="key white g" data-note="2G"></li>
+                                <li class="key black gs" data-note="2G#"></li>
+                                <li class="key white a" data-note="2A"></li>
+                                <li class="key black as" data-note="2A#"></li>
+                                <li class="key white b" data-note="2B"></li>
+                                <li class="key white c" data-note="3C"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Styles -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Our Custom Styles -->
+    <link href="synth.css" rel="stylesheet">
+
+    <!-- JS Libraries -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous">
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
+        crossorigin="anonymous">
+    </script>
+
+    <!-- Our custom JavaScript -->
+    <script type="text/javascript" src="synth.js"></script>
+
+</body>
+</html>

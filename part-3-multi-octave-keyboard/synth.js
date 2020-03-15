@@ -114,6 +114,10 @@
     }
 
 
+    $('#waveType').change(function() {
+        synth.type = $(this).val();
+    });
+
     // Scale Keyboard
     var $keys = $("#keys");
     var $container = $("#border"); // element we want to fill completely

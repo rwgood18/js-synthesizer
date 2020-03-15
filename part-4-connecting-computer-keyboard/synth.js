@@ -247,6 +247,10 @@
         }
     });
 
+    $('#waveType').change(function() {
+        synth.osc.type = $(this).val();
+    });
+
     // Scale Keyboard
     var $keys = $("#keys");
     var $container = $("#border"); // element we want to fill completely
