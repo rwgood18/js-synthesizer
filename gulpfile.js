@@ -20,7 +20,7 @@ gulp.task('styles', function() {
 	    var tasks = folders.forEach(function(folder) {
 		   	// console.log(folder);
 		   	if (folder.indexOf('part') != -1 // Complile SCSS in the all parts folders
-		   		&& folder != 'part-1') {     // But not part-1 because there's no SCSS
+		   		&& folder != 'part-1-making-sound') {     // But not part-1 because there's no SCSS
 		   		gulp.src(folder + '/synth.scss')
 		    	.pipe(sass()) 
 		    	.pipe(gulp.dest(folder))
