@@ -168,7 +168,8 @@
             // Decay and sustain
             this.voiceGain.gain.linearRampToValueAtTime(synth.sustain, now + synth.attack + synth.hold + synth.decay);
             
-            // console.log(gainNode.gain.value);
+            console.log('SUSTAIN: ' +synth.sustain);
+
             this.voiceGain.connect(pregainNode); // Connecting to output
             this.oscillator.start(0);
         }
@@ -312,10 +313,10 @@
     });
 
     // Adapted from this codepen: https://codepen.io/jhnsnc/pen/mqPGQK
-    var myKnobContainer = document.querySelector('.my-fl-knob');
-    var myKnob = new PrecisionInputs.FLStandardKnob(myKnobContainer);
+    var rgKnobContainer = document.querySelector('.rg-fl-knob');
+    var rgKnob = new PrecisionInputs.FLStandardKnob(rgKnobContainer);
 
-    // Knobs
+    // Browser specific transform property name
     var transformProp = getTransformProperty();
 
     var envelopeKnobStartPositions = [
@@ -327,7 +328,12 @@
         (100*synth.release)/maxRelease
     ];
 
-    var envelopeKnobs = [...document.querySelectorAll('.fls-e_knob.envelope-knob')];
+    // Select all the knobs 
+    // '...'' is spread operator. This winds up giving us the elements as an Array instead of a NodeList.
+    var envelopeKnobs = [...document.querySelectorAll('.fls-e_knob.envelope-knob')];  
+    // console.log(envelopeKnobs.constructor);
+
+    // Map each element to an instance of KnobInput with these update functions
     var envelopeKnobs = envelopeKnobs.map((el, idx) => new KnobInput(el, {
         visualContext: function() {
             this.indicatorRing = this.element.querySelector('.indicator-ring');
@@ -363,7 +369,7 @@
         initial: envelopeKnobStartPositions[idx],
     }));
 
-    // Envelope Visualization
+    // Select the Envelope Visualization elements and store them in variables
     var container = document.querySelector('.envelope-visualizer');
     var enveloperVisualizer = {
         container: container,
@@ -373,6 +379,8 @@
         decay: container.querySelector('.decay'),
         release: container.querySelector('.release'),
     };
+
+    // Update the envelope visualizer. Use debounce to avoid overtriggering this function - not more than every 10 ms    
     var updateVisualization = debounce(function(evt) {
 
         var maxPtSeparation = 100; 
@@ -395,17 +403,17 @@
         var tSustain = ptSustain;
         var tRelease = tDecay + ptRelease;
 
-        // Draw the line between points on the visulaizer graph
-        enveloperVisualizer.shape.setAttribute('d', `M${0},100` + `C${0},100,${tAttack},0,${tAttack},0` + `L${tHold},0` + `C${tHold},0,${tDecay},${tSustain},${tDecay},${tSustain}` + `C${tDecay},${tSustain},${tRelease},100,${tRelease},100`);
-        
         // Set the points on the visulizer graph
         enveloperVisualizer.attack.setAttribute('cx', tAttack);
         enveloperVisualizer.hold.setAttribute('cx', tHold);
         enveloperVisualizer.decay.setAttribute('cx', tDecay);
         enveloperVisualizer.decay.setAttribute('cy', tSustain);
         enveloperVisualizer.release.setAttribute('cx', tRelease);
+      
+        // Draw the line between points on the visulaizer graph
+        enveloperVisualizer.shape.setAttribute('d', `M${0},100` + `C${0},100,${tAttack},0,${tAttack},0` + `L${tHold},0` + `C${tHold},0,${tDecay},${tSustain},${tDecay},${tSustain}` + `C${tDecay},${tSustain},${tRelease},100,${tRelease},100`);
         
-
+        // Convert values to correct magnitude and label
         var param = 0;
         if (evt != null) {
             if (evt.target.parentNode.classList.contains('attack')) {
@@ -424,10 +432,13 @@
         }
 
     }, 10);
+
+    // When the knob gets turned, call the update functions we just defined above
     envelopeKnobs.forEach(knob => {
         knob.addEventListener('change', updateVisualization);
     });
 
+    // Initialize knob value labels
     function initEnvelopeKnobs() {
         $('.envelope-knob.attack').siblings('.msLabel').text(Math.round(synth.attack * 1000) + 'ms');
         $('.envelope-knob.hold').siblings('.msLabel').text(Math.round(synth.hold / mHold * 1000) + 'ms');
@@ -437,21 +448,14 @@
     }
     initEnvelopeKnobs();
     updateVisualization();
-    var panelElement = document.querySelector('.fls-envelope');
-    var panel = {
-        element: panelElement,
-        originalTransform: getComputedStyle(panelElement)[transformProp],
-        width: panelElement.getBoundingClientRect().width,
-        height: panelElement.getBoundingClientRect().height,
-    };
 
+    // Scale envelope
     var $container = $("#border"); // element we want to fill completely
     var $envelope = $('#envelope');
     var resizeEnvelope = () => {
         // Scale based on the '#border' element of the synthesizer
         // because this is the element we always want to fill 100%
         // with the keyboard
-
         var scale = $("#border").width() / $envelope.outerWidth();
         $envelope.css({
             transform: "translate(-50%, -50%) " + "scale(" + scale + ")"
@@ -464,7 +468,7 @@
 
     // Scale Keyboard
     var $keys = $("#keys");
-    function resizeKeyboard() {
+    var resizeKeyboard = () => {
         // Scale based on the '#border' element of the synthesizer
         // because this is the element we always want to fill 100%
         // with the keyboard
@@ -473,7 +477,6 @@
             transform: "translate(-50%, 0%) " + "scale(" + scale + ")"
         });
     }
-
 
     // Scale keyboard on screensize change
     $(window).on('resize orientationchange', function() {
@@ -498,6 +501,7 @@
         return getSupportedPropertyName(['transform', 'msTransform', 'webkitTransform', 'mozTransform', 'oTransform']);
     }
 
+    // Debounce prevents the function from being called to frequently as is likely to happen with a knob
     function debounce(func, wait, immediate) {
         var timeout;
         return function() {
