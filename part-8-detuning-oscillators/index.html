@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS Synthesizer</title>
+</head>
+<body>
+
+    <!-- HTML -->
+    <div class="container">
+        <div class="js-synth bg-light mt-4">
+            <div id="border" class="border p-4">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="title">Synthesizer</p>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <div class="section osc">
+                      <p class="label">Oscillator 1<input class="oscOn" data-osc="osc1" type="checkbox" checked data-toggle="toggle" data-size="xs"></p>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="waveType1">Waveform</label>
+                        </div>
+                        <select class="custom-select waveType" id="waveType1">
+                          <option value="sine">Sine</option>
+                          <option value="square">Square</option>
+                          <option value="triangle">Triangle</option>
+                          <option value="sawtooth" selected>Sawtooth</option>
+                          <!-- <option value="custom">Custom</option> -->
+                        </select>
+                      </div>
+                      <p class="label">Detune</strong></p>
+                      <div class="control">
+                        <div class="sliders">
+                          <div id="detune1" data-osc="osc1" class="dragmove slider" style=""></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="section osc">
+                      <p class="label">Oscillator 2<input class="oscOn" data-osc="osc2" type="checkbox" data-toggle="toggle" data-size="xs" checked></p>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="waveType2">Waveform</label>
+                        </div>
+                        <select class="custom-select waveType" id="waveType2">
+                          <option value="sine">Sine</option>
+                          <option value="square" selected>Square</option>
+                          <option value="triangle">Triangle</option>
+                          <option value="sawtooth">Sawtooth</option>
+                          <!-- <option value="custom">Custom</option> -->
+                        </select>
+                      </div>
+                      <p class="label">Detune</strong></p>
+                      <div class="control">
+                        <div class="sliders">
+                          <div id="detune2" data-osc="osc2" class="dragmove slider" style=""></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="section envelope">
+                            <div>
+                              <div style="display: none;" class="rg-fl-knob"></div>
+                              <svg class="defs">
+                                <defs>
+                                  <radialGradient id="grad-dial-soft-shadow" cx="0.5" cy="0.5" r="0.5">
+                                    <stop offset="85%" stop-color="#242a2e" stop-opacity="0.4"></stop>
+                                    <stop offset="100%" stop-color="#242a2e" stop-opacity="0"></stop>
+                                  </radialGradient>
+                                  <linearGradient id="grad-dial-base" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#52595f"></stop>
+                                    <stop offset="100%" stop-color="#2b3238"></stop>
+                                  </linearGradient>
+                                  <linearGradient id="grad-dial-highlight" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#70777d" stop-opacity="1"></stop>
+                                    <stop offset="40%" stop-color="#70777d" stop-opacity="0"></stop>
+                                    <stop offset="55%" stop-color="#70777d" stop-opacity="0"></stop>
+                                    <stop offset="100%" stop-color="#70777d" stop-opacity="0.3"></stop>
+                                  </linearGradient>
+                                  <filter id="glow">
+                                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="2"></feGaussianBlur>
+                                    <feComposite in="blur" in2="SourceGraphic" operator="over"></feComposite>
+                                  </filter>
+                                </defs>
+                              </svg>
+                              <div id="envelope" class="fls-envelope">
+                                <p class="label text-center">Envelope</strong></p>
+                                <div class="fls-e_visualizer">
+                                  <svg class="envelope-visualizer" viewBox="0 0 600 100" preserveAspectRatio="xMinYMid slice">
+                                    <path class="envelope-shape" d="M0,100L0,0" fill="transparent" stroke="#4eccff" stroke-width="2"></path>
+                                    <circle class="delay" cx="0" cy="100" r="6" fill="#284554" stroke="#4eccff" stroke-width="2"></circle>
+                                    <circle class="attack" cx="0" cy="0" r="6" fill="#284554" stroke="#4eccff" stroke-width="2"></circle>
+                                    <circle class="hold" cx="0" cy="0" r="6" fill="#284554" stroke="#4eccff" stroke-width="2"></circle>
+                                    <circle class="decay" cx="0" cy="100" r="6" fill="#284554" stroke="#4eccff" stroke-width="2"></circle>
+                                    <circle class="release" cx="0" cy="100" r="6" fill="#284554" stroke="#4eccff" stroke-width="2"></circle>
+                                  </svg>
+                                </div>
+                                <div class="fls-e_controls">
+                                  <div class="fls-e_control">
+                                    <div class="knob-input fls-e_knob envelope-knob attack">
+                                      <svg class="knob-input_visual" viewBox="0 0 40 40">
+                                        <circle class="focus-indicator" cx="20" cy="20" r="18" fill="#4eccff" filter="url(#glow)"></circle>
+                                        <circle class="indicator-ring-bg" cx="20" cy="20" r="18" fill="#353b3f" stroke="#23292d"></circle>
+                                        <path class="indicator-ring" d="M20,20Z" fill="#4eccff"></path>
+                                        <g class="dial">
+                                          <circle cx="20" cy="20" r="16" fill="url(#grad-dial-soft-shadow)"></circle>
+                                          <ellipse cx="20" cy="22" rx="14" ry="14.5" fill="#242a2e" opacity="0.15"></ellipse>
+                                          <circle cx="20" cy="20" r="14" fill="url(#grad-dial-base)" stroke="#242a2e" stroke-width="1.5"></circle>
+                                          <circle cx="20" cy="20" r="13" fill="transparent" stroke="url(#grad-dial-highlight)" stroke-width="1.5"></circle>
+                                          <circle class="dial-highlight" cx="20" cy="20" r="14" fill="#ffffff"></circle>
+                                          <circle class="indicator-dot" cx="20" cy="30" r="1.5" fill="#4eccff"></circle>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                    <div class="fls-e_label">att</div>
+                                    <div class="msLabel" data-unit="ms"></div>
+                                  </div>
+                                  <div class="fls-e_control">
+                                    <div class="knob-input fls-e_knob envelope-knob hold">
+                                      <svg class="knob-input_visual" viewBox="0 0 40 40">
+                                        <circle class="focus-indicator" cx="20" cy="20" r="18" fill="#4eccff" filter="url(#glow)"></circle>
+                                        <circle class="indicator-ring-bg" cx="20" cy="20" r="18" fill="#353b3f" stroke="#23292d"></circle>
+                                        <path class="indicator-ring" d="M20,20Z" fill="#4eccff"></path>
+                                        <g class="dial">
+                                          <circle cx="20" cy="20" r="16" fill="url(#grad-dial-soft-shadow)"></circle>
+                                          <ellipse cx="20" cy="22" rx="14" ry="14.5" fill="#242a2e" opacity="0.15"></ellipse>
+                                          <circle cx="20" cy="20" r="14" fill="url(#grad-dial-base)" stroke="#242a2e" stroke-width="1.5"></circle>
+                                          <circle cx="20" cy="20" r="13" fill="transparent" stroke="url(#grad-dial-highlight)" stroke-width="1.5"></circle>
+                                          <circle class="dial-highlight" cx="20" cy="20" r="14" fill="#ffffff"></circle>
+                                          <circle class="indicator-dot" cx="20" cy="30" r="1.5" fill="#4eccff"></circle>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                    <div class="fls-e_label">hold</div>
+                                    <div class="msLabel" data-unit="ms"></div>
+                                  </div>
+                                  <div class="fls-e_control">
+                                    <div class="knob-input fls-e_knob envelope-knob decay">
+                                      <svg class="knob-input_visual" viewBox="0 0 40 40">
+                                        <circle class="focus-indicator" cx="20" cy="20" r="18" fill="#4eccff" filter="url(#glow)"></circle>
+                                        <circle class="indicator-ring-bg" cx="20" cy="20" r="18" fill="#353b3f" stroke="#23292d"></circle>
+                                        <path class="indicator-ring" d="M20,20Z" fill="#4eccff"></path>
+                                        <g class="dial">
+                                          <circle cx="20" cy="20" r="16" fill="url(#grad-dial-soft-shadow)"></circle>
+                                          <ellipse cx="20" cy="22" rx="14" ry="14.5" fill="#242a2e" opacity="0.15"></ellipse>
+                                          <circle cx="20" cy="20" r="14" fill="url(#grad-dial-base)" stroke="#242a2e" stroke-width="1.5"></circle>
+                                          <circle cx="20" cy="20" r="13" fill="transparent" stroke="url(#grad-dial-highlight)" stroke-width="1.5"></circle>
+                                          <circle class="dial-highlight" cx="20" cy="20" r="14" fill="#ffffff"></circle>
+                                          <circle class="indicator-dot" cx="20" cy="30" r="1.5" fill="#4eccff"></circle>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                    <div class="fls-e_label">dec</div>
+                                    <div class="msLabel" data-unit="ms"></div>
+                                  </div>
+                                  <div class="fls-e_control">
+                                    <div class="knob-input fls-e_knob envelope-knob sustain">
+                                      <svg class="knob-input_visual" viewBox="0 0 40 40">
+                                        <circle class="focus-indicator" cx="20" cy="20" r="18" fill="#4eccff" filter="url(#glow)"></circle>
+                                        <circle class="indicator-ring-bg" cx="20" cy="20" r="18" fill="#353b3f" stroke="#23292d"></circle>
+                                        <path class="indicator-ring" d="M20,20Z" fill="#4eccff"></path>
+                                        <g class="dial">
+                                          <circle cx="20" cy="20" r="16" fill="url(#grad-dial-soft-shadow)"></circle>
+                                          <ellipse cx="20" cy="22" rx="14" ry="14.5" fill="#242a2e" opacity="0.15"></ellipse>
+                                          <circle cx="20" cy="20" r="14" fill="url(#grad-dial-base)" stroke="#242a2e" stroke-width="1.5"></circle>
+                                          <circle cx="20" cy="20" r="13" fill="transparent" stroke="url(#grad-dial-highlight)" stroke-width="1.5"></circle>
+                                          <circle class="dial-highlight" cx="20" cy="20" r="14" fill="#ffffff"></circle>
+                                          <circle class="indicator-dot" cx="20" cy="30" r="1.5" fill="#4eccff"></circle>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                    <div class="fls-e_label">sus</div>
+                                    <div class="msLabel" data-unit="%"></div>
+                                  </div>
+                                  <div class="fls-e_control">
+                                    <div class="knob-input fls-e_knob envelope-knob release">
+                                      <svg class="knob-input_visual" viewBox="0 0 40 40">
+                                        <circle class="focus-indicator" cx="20" cy="20" r="18" fill="#4eccff" filter="url(#glow)"></circle>
+                                        <circle class="indicator-ring-bg" cx="20" cy="20" r="18" fill="#353b3f" stroke="#23292d"></circle>
+                                        <path class="indicator-ring" d="M20,20Z" fill="#4eccff"></path>
+                                        <g class="dial">
+                                          <circle cx="20" cy="20" r="16" fill="url(#grad-dial-soft-shadow)"></circle>
+                                          <ellipse cx="20" cy="22" rx="14" ry="14.5" fill="#242a2e" opacity="0.15"></ellipse>
+                                          <circle cx="20" cy="20" r="14" fill="url(#grad-dial-base)" stroke="#242a2e" stroke-width="1.5"></circle>
+                                          <circle cx="20" cy="20" r="13" fill="transparent" stroke="url(#grad-dial-highlight)" stroke-width="1.5"></circle>
+                                          <circle class="dial-highlight" cx="20" cy="20" r="14" fill="#ffffff"></circle>
+                                          <circle class="indicator-dot" cx="20" cy="30" r="1.5" fill="#4eccff"></circle>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                    <div class="fls-e_label">rel</div>
+                                    <div class="msLabel" data-unit="ms"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-lg-7">
+                        <p>Try playing on your keyboard.</p>
+                    </div>
+                    <div class="col-sm-6 col-lg-5 text-right">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <label class="input-group-text" for="octaveSelect">Keyrange</label>
+                          </div>
+                          <select class="custom-select" id="octaveSelect">
+                            <option value="1">C1 - C3</option>
+                            <option value="2">C2 - C4</option>
+                            <option value="3" selected>C3 - C5</option>
+                            <option value="4">C4 - C6</option>
+                            <option value="5">C5 - C7</option>
+                          </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 ">
+                        <div id="scalable-keys" class="keys">
+                            <ul id="keys">
+                                <li class="key white c" data-note="C"></li>
+                                <li class="key black cs" data-note="C#"></li>
+                                <li class="key white d" data-note="D"></li>
+                                <li class="key black ds" data-note="D#"></li>
+                                <li class="key white e" data-note="E"></li>
+                                <li class="key white f" data-note="F"></li>
+                                <li class="key black fs" data-note="F#"></li>
+                                <li class="key white g" data-note="G"></li>
+                                <li class="key black gs" data-note="G#"></li>
+                                <li class="key white a" data-note="A"></li>
+                                <li class="key black as" data-note="A#"></li>
+                                <li class="key white b" data-note="B"></li>
+                                <li class="key white c" data-note="2C"></li>
+                                <li class="key black cs" data-note="2C#"></li>
+                                <li class="key white d" data-note="2D"></li>
+                                <li class="key black ds" data-note="2D#"></li>
+                                <li class="key white e" data-note="2E"></li>
+                                <li class="key white f" data-note="2F"></li>
+                                <li class="key black fs" data-note="2F#"></li>
+                                <li class="key white g" data-note="2G"></li>
+                                <li class="key black gs" data-note="2G#"></li>
+                                <li class="key white a" data-note="2A"></li>
+                                <li class="key black as" data-note="2A#"></li>
+                                <li class="key white b" data-note="2B"></li>
+                                <li class="key white c" data-note="3C"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Styles -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
+    <!-- Our Custom Styles -->
+    <link href="synth.css" rel="stylesheet">
+
+
+
+    <!-- JS Libraries -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script src="https://unpkg.com/precision-inputs@0.2.5/scripts/precision-inputs.fl-controls.js"></script>
+    <script type="text/javascript" src="scripts/knob-input.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" crossorigin="anonymous"></script>
+
+    <!-- Our custom JavaScript -->
+    <script type="text/javascript" src="synth.js"></script>
+
+</body>
+</html>
