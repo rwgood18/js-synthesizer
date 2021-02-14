@@ -388,8 +388,8 @@
         synth[$(this).attr('data-osc')].detune = 0;
     });
     // Init sliders
-    $('#detune1').attr('data-value', '0 cents').css('padding-left', '50%');
-    $('#detune2').attr('data-value', '10 cents').css('padding-left', '50%');
+    $('#detune1').attr('data-value', synth.osc1.detune+' cents').css('padding-left', '50%');
+    $('#detune2').attr('data-value', synth.osc1.detune+' cents').css('padding-left', '50%');
 
 
     // Adapted from this codepen: https://codepen.io/jhnsnc/pen/mqPGQK
